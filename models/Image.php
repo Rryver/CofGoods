@@ -47,7 +47,13 @@ class Image extends ActiveRecord
 
     public function getUploadDirectory()
     {
-        return Yii::getAlias('@app') . '/uploads/product-images/';
+        //return Yii::getAlias('@app') . '/uploads/product-images/';
+        return Yii::$app->params['image.uploadPath'];
+    }
+
+    public static function getOneById($id)
+    {
+        return static::findOne(['id' => $id]);
     }
 
     public function save($runValidation = true, $attributeNames = null)
@@ -78,5 +84,17 @@ class Image extends ActiveRecord
         }
     }
 
+    public function getPathToImage()
+    {
+        return $this->getUploadDirectory() . $this->name . '.' . $this->extension;
+    }
 
+    public function deleteImageById($id)
+    {
+        if (self::deleteAll(['id' => $id])) {
+            return true;
+        }
+
+        return false;
+    }
 }

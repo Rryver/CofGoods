@@ -76,8 +76,17 @@ class Product extends ActiveRecord
 
     public function delete($id = null)
     {
-
-
         return parent::delete();
+    }
+
+    public function getPathToImage()
+    {
+        $image = Image::getOneById($this->image_id);
+
+        if (!isset($image)) {
+            return '';
+        }
+
+        return  $image->getPathToImage();
     }
 }

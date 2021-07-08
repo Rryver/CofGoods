@@ -22,9 +22,9 @@ $linkTemplate = '<a class="menu__link" href="{url}">{label}</a>'
             ],
             'linkTemplate' => $linkTemplate,
             'items' => [
-                ['label' => 'Home', 'url' => ['site/index']],
+                //['label' => 'Home', 'url' => ['site/index']],
                 ['label' => 'Catalog', 'url' => ['admin/catalog'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => 'Add new product', 'url' => ['admin/product-edit'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => 'Add new product', 'url' => ['admin/product-create'], 'visible' => !Yii::$app->user->isGuest],
             ],
             'activeCssClass' => 'menu__item_active',
         ]);

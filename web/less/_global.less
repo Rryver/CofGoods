@@ -94,7 +94,10 @@ body {
 		transform: scale(0.98);
 	}
 
-
+	&_disable {
+		opacity: 0.5;
+		cursor: unset !important;
+	}
 }
 
 .btn-common_danger {
@@ -126,7 +129,7 @@ body {
 	}
 }
 
-.form-edit {
+.form-common {
 
 	&__label {
 		display: block;
@@ -141,6 +144,12 @@ body {
 
 		&_textarea {
 			min-height: 400px;
+		}
+
+		&_small {
+			display: inline-block;
+			min-width: unset;
+			width: 100%;
 		}
 	}
 }
@@ -167,6 +176,10 @@ body {
 
 		&:last-child {
 			margin-bottom: 0;
+		}
+
+		&_inline-block {
+			display: inline-block;
 		}
 	}
 }

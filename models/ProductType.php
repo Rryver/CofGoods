@@ -42,4 +42,9 @@ class ProductType extends ActiveRecord
     {
         return ArrayHelper::map(static::find()->all(), 'id', 'name');
     }
+
+    public static function getNmeById($type_id)
+    {
+        return static::findOne(['id' => $type_id])->name;
+    }
 }

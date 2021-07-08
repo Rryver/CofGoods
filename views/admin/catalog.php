@@ -3,8 +3,10 @@
 /**
  * @var $this \yii\web\View
  * @var $dataProvider \yii\data\ActiveDataProvider
+ * @var $product Product
  */
 
+use app\models\Image;
 use app\models\Product;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -16,34 +18,71 @@ use yii\widgets\Pjax;
 
 <div class="admin-catalog">
   <section class="products">
-    <div class="container">
+    <div class="container-admin">
         <?php Pjax::begin() ?>
-      <!--      ul.products__list>li.products__item*2>div.products__card-product.card-product>h3.card-product__title+img.card-product__image+div.card-product__-->
+
+        <?php $searchForm = ActiveForm::begin([
+            'options' => ['class' => 'products__search-form search-form form-common'],
+            'action' => ['admin/product-search'],
+            'method' => 'post',
+        ]); ?>
+
+
+
+        <?php ActiveForm::end(); ?>
+
+      <label class="form-edit__label">Search by name or sku</label>
+      <div class="products__search search">
+        <input class="form-edit__input form-edit__input_small" type="text">
+        <button class="btn-common">Search</button>
+      </div>
 
         <?php $form = ActiveForm::begin([
             'action' => ['admin/delete-product'],
             'method' => 'post',
         ]); ?>
 
-
-
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'options' => ['class' => 'products__gridview'],
+            'pager' => [
+                'options' => ['class' => 'pagination-widget__list'],
+                'pageCssClass' => 'pagination-widget__item',
+                'prevPageCssClass' => 'pagination-widget__item pagination-widget__item-prev',
+                'nextPageCssClass' => 'pagination-widget__item pagination-widget__item-next',
+                'activePageCssClass' => 'pagination-widget__item_active',
+                'linkOptions' => ['class' => 'pagination-widget__link'],
+            ],
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 'title',
                 [
+                    'label' => 'Image',
+                    'format' => 'raw',
+                    'value' => function ($product) {
+                        return Html::img(
+                            $product->getPathToImage(),
+                            [
+                                'alt' => 'qwe',
+                                'style' => 'max-width: 200px; height: auto;',
+                            ]
+                        );
+                    }
+                ],
+                [
                     'label' => 'SKU',
                     'attribute' => 'sku_id',
-//                    'value' => function($product) {
-//                        return \app\models\Sku::getSkuNameById($product->sku_id);
-//                    }
+                    'value' => function ($product) {
+                        return \app\models\Sku::getNameById($product->sku_id);
+                    }
                 ],
                 'count',
                 [
                     'label' => 'type',
                     'attribute' => 'type_id',
+                    'value' => function ($product) {
+                        return \app\models\ProductType::getNmeById($product->type_id);
+                    }
                 ],
                 [
                     'label' => 'Created at',
@@ -57,20 +96,33 @@ use yii\widgets\Pjax;
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    //'template' => '{update delete}',
+                    'template' => '{update} {delete}',
+                    'buttons' => [
+                        'update' => function ($url, $product) {
+                            return Html::a(
+                                'Edit',
+                                ['admin/product-edit', 'id' => $product->id],
+                                ['class' => 'admin-gridview__btn btn-common']);
+                        },
+                        'delete' => function ($url, $product) {
+                            return Html::a(
+                                'Delete',
+                                ['admin/product-delete', 'id' => $product->id],
+                                [
+                                    'class' => 'admin-gridview__btn btn-common_danger',
+                                    'data' => ['confirm' => 'Are you sure you want to delete this product?'],
+                                ]);
+                        },
+                    ],
                     'contentOptions' => ['style' => 'width: 100px; text-align: center'],
                 ],
                 [
-                    'class' => 'yii\grid\CheckboxColumn',
+                    'class' => \app\models\CheckBoxColumn::className(),
+                    'headerOptions' => ['class' => 'products__checkbox-column', 'style' => 'max-width: 200px; width: 200px'],
                 ],
             ],
         ]) ?>
 
-
-        <?= Html::submitButton('Delete selected products', [
-            'class' => 'products__btn btn-common_danger',
-            'data' => ['confirm' => 'Delete?'],
-        ]) ?>
         <?php ActiveForm::end(); ?>
 
         <?php Pjax::end() ?>

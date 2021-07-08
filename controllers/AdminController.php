@@ -83,21 +83,18 @@ class AdminController extends Controller
         ]);
     }
 
-    public function actionProductEdit($id = null)
+    public function actionProductCreate()
     {
         $product = new Product();
         $image = new Image();
 
         if ($product->load(Yii::$app->request->post())) {
-//            if (isset($image->imageFile)) {
                 $image->imageFile = UploadedFile::getInstance($image, 'imageFile');
-
                 if ($image->save()) {
                     $product->image_id = $image->id;
                 } else {
                     Yii::$app->session->setFlash('warning', 'Something goes wrong when upload image');
                 }
-//            }
 
             if ($product->save()) {
                 //Yii::$app->session->setFlash('success', 'New product was added successufly');
@@ -111,10 +108,45 @@ class AdminController extends Controller
         ]);
     }
 
-    public function actionDeleteProduct($id = null)
+    public function actionProductEdit($id)
+    {
+        $product = Product::getProductById($id);
+        if (!isset($product)) {
+            $this->redirect('/');
+        }
+
+        $image = Image::getOneById($product->image_id);
+        if (!isset($image)) {
+            $image = new Image();
+        }
+
+
+        if ($product->load(Yii::$app->request->post())) {
+            $image = new Image();
+            $image->imageFile = UploadedFile::getInstance($image, 'imageFile');
+            if ($image->save()) {
+                $image->deleteImageById($product->image_id);
+                $product->image_id = $image->id;
+            } else {
+                Yii::$app->session->setFlash('warning', 'Something goes wrong when upload image');
+            }
+
+            if ($product->save()) {
+                return $this->redirect(Url::to(['admin/catalog']));
+            }
+        }
+
+
+        return $this->render('product-edit', [
+            'product' => $product,
+            'image' => $image,
+        ]);
+    }
+
+    public function actionProductDelete($id)
     {
         $post = $_POST;
-        if ()
+//        if ()
 
         return $this->render('index', [
             'post' => $post,

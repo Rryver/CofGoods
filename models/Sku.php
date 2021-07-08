@@ -35,7 +35,7 @@ class Sku extends ActiveRecord
         return ArrayHelper::map(static::find()->all(), 'id', 'name');
     }
 
-    public static function getSkuNameById($id)
+    public static function getNameById($id)
     {
         return static::findOne(['id' => $id])->name;
     }

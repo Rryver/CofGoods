@@ -38,7 +38,21 @@ $this->title = $isEditMode ? 'Edit product' : 'New product';
 
       <?= $form->field($product, 'count')->input('number') ?>
 
-      <?= $form->field($image, 'imageFile')->fileInput() ?>
+      <?php
+      if ($isEditMode) {
+          echo Html::img(
+              $product->getPathToImage(),
+              [
+                  'alt' => 'qwe',
+                  'style' => 'max-width: 300px; height: auto;'
+              ]);
+          echo $form->field($image, 'imageFile')->fileInput()->label('Select new file to change product image');
+      } else {
+          echo $form->field($image, 'imageFile')->fileInput();
+      }
+      ?>
+
+
 
       <?= Html::submitButton('Save', ['class' => 'btn-common form-product__btn']) ?>
       <?php ActiveForm::end(); ?>
