@@ -1,0 +1,35 @@
+.menu {
+    display: inline-block;
+    padding: 0 15px;
+
+    &_pull-right {
+        position: absolute;
+        right: 0;
+    }
+
+    &_pull-left {
+        position: absolute;
+        left: 0;
+    }
+
+    &__list {
+        display: inline-block;
+    }
+
+    &__item {
+        display: inline-block;
+        margin-right: 20px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &_active > .menu__link {
+            .activePage();
+        }
+    }
+
+    &__link {
+        .nav-link();
+    }
+}
