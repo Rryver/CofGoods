@@ -4,6 +4,7 @@
  * @var $this \yii\web\View
  * @var $dataProvider \yii\data\ActiveDataProvider
  * @var $product Product
+ * @var $productSearch \app\models\ProductSearch
  */
 
 use app\models\Image;
@@ -27,7 +28,7 @@ use yii\widgets\Pjax;
             'method' => 'post',
         ]); ?>
 
-
+      <?= $searchForm->field() ?>
 
         <?php ActiveForm::end(); ?>
 
