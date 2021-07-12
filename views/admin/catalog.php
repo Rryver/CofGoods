@@ -28,7 +28,7 @@ use yii\widgets\Pjax;
             'method' => 'post',
         ]); ?>
 
-      <?= $searchForm->field() ?>
+<!--      --><?//= $searchForm->field() ?>
 
         <?php ActiveForm::end(); ?>
 
